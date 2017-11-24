@@ -1,0 +1,9 @@
+{
+  "extends": "google",
+  "rules": {
+    "new-cap": 1,
+    "linebreak-style": 0,
+    "no-unused-vars": 0,
+    "no-negated-condition": 1
+  }
+}

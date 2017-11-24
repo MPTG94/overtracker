@@ -1,0 +1,45 @@
+{
+  "name": "overtracker",
+  "version": "1.0.0",
+  "description": "Stats Tracker for Overwatch",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MPTG94/overtracker.git"
+  },
+  "keywords": [
+    "Overwatch",
+    "Node",
+    "React"
+  ],
+  "author": "MPTG94",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MPTG94/overtracker/issues"
+  },
+  "homepage": "https://github.com/MPTG94/overtracker#readme",
+  "dependencies": {
+    "oversmash": "^1.2.5"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.13",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^4.0.0",
+    "gulp-inject": "^4.3.0",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-minify-html": "^1.0.6",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-print": "^2.0.1",
+    "gulp-task-listing": "^1.0.1",
+    "gulp-util": "^3.0.8",
+    "wiredep": "^4.0.0",
+    "yargs": "^10.0.3"
+  }
+}
