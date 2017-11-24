@@ -35,7 +35,6 @@ gulp.task("styles", ["clean-styles"], function() {
   return gulp
     .src(config.less)
     .pipe($.plumber())
-    .pipe($.less())
     .pipe(
       $.autoprefixer({
         browsers: ["last 2 version", "> 5%"]
@@ -124,7 +123,7 @@ gulp.task("wiredep", function() {
     .pipe(gulp.dest(config.client));
 });
 
-gulp.task("inject", ["wiredep", "styles"], function() {
+gulp.task("inject", ["styles"], function() {
   log("Wire up the app css js and our app js into the html");
 
   return gulp

@@ -22,7 +22,12 @@
   },
   "homepage": "https://github.com/MPTG94/overtracker#readme",
   "dependencies": {
-    "oversmash": "^1.2.5"
+    "express": "^4.16.2",
+    "file-stream-rotator": "^0.2.0",
+    "fs": "0.0.1-security",
+    "morgan": "^1.9.0",
+    "oversmash": "^1.2.5",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "browser-sync": "^2.18.13",
