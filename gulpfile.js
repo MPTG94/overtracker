@@ -30,14 +30,21 @@ gulp.task("vet", function() {
 });
 
 gulp.task("styles", ["clean-styles"], function() {
-  log("Compiling Less --> CSS");
+  log("Preparing CSS");
 
   return gulp
-    .src(config.less)
+    .src(config.css)
+    .pipe($.concat("site.css"))
+    .pipe($.cleanCss())
     .pipe($.plumber())
     .pipe(
       $.autoprefixer({
         browsers: ["last 2 version", "> 5%"]
+      })
+    )
+    .pipe(
+      $.rename({
+        suffix: ".min"
       })
     )
     .pipe(gulp.dest(config.temp));
@@ -128,7 +135,7 @@ gulp.task("inject", ["styles"], function() {
 
   return gulp
     .src(config.index)
-    .pipe($.inject(gulp.src(config.css)))
+    .pipe($.inject(gulp.src(config.tempCss)))
     .pipe(gulp.dest(config.client));
 });
 
@@ -181,7 +188,7 @@ function startBrowserSync() {
 
   log("Starting browser-sync on port " + port);
 
-  gulp.watch([config.less], ["styles"]).on("change", function(event) {
+  gulp.watch([config.css], ["styles"]).on("change", function(event) {
     changeEvent(event);
   });
 
@@ -190,7 +197,7 @@ function startBrowserSync() {
     port: 3000,
     files: [
       config.client + "**/*.*",
-      "!" + config.less,
+      "!" + config.css,
       config.temp + "**/*.css"
     ],
     ghostMode: {

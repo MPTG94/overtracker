@@ -47,10 +47,6 @@ if (app.get("env") === "production") {
   app.use(logger("dev"));
 }
 
-// Setting default route for root
-// Serving html, css and js files for website
-app.use(express.static(path.join(__dirname, "../", "public")));
-
 // Setting API routes
 //app.use("/api/cars", cars);
 //app.use("/api/companies", companies);

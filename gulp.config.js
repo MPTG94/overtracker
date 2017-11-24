@@ -22,7 +22,7 @@ module.exports = function() {
     /**
      * All temp css file paths
      */
-    css: temp + "styles.css",
+    tempCss: temp + "site.min.css",
 
     /**
      * Fonts paths
@@ -52,6 +52,11 @@ module.exports = function() {
       clientApp + "**/*.js",
       "!" + clientApp + "**/*.spec.js"
     ],
+
+    /**
+     * All CSS paths
+     */
+    css: client + "styles/*.css",
 
     /**
      * All Less paths
