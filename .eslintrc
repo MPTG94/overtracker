@@ -1,9 +1,18 @@
 {
-  "extends": "google",
+  "extends": "prettier",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "plugins": ["prettier"],
   "rules": {
+    "prettier/prettier": "error",
     "new-cap": 1,
     "linebreak-style": 0,
     "no-unused-vars": 0,
     "no-negated-condition": 1
+  },
+  "parserOptions": {
+    "ecmaVersion": 6
   }
 }

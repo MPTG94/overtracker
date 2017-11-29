@@ -1,63 +1,71 @@
-var gulp = require("gulp");
-var args = require("yargs").argv;
-var browserSync = require("browser-sync");
-var config = require("./gulp.config")();
-var del = require("del");
-var $ = require("gulp-load-plugins")({
+const gulp = require('gulp');
+const args = require('yargs').argv;
+const browserSync = require('browser-sync');
+const config = require('./gulp.config')();
+const del = require('del');
+const $ = require('gulp-load-plugins')({
   lazy: true
 });
-var port = process.env.PORT || config.defaultPort;
+let port = process.env.PORT || config.defaultPort;
 
-gulp.task("help", $.taskListing);
+var hello = 'hi';
 
-gulp.task("default", ["help"]);
+gulp.task('help', $.taskListing);
 
-gulp.task("vet", function() {
-  log("Analyzing source with JSHint and JSCS");
+gulp.task('default', ['help']);
+
+/**
+ * Task to verify JS rules with ESLint
+ */
+gulp.task('vet', function() {
+  log('Analyzing source with ESLint');
 
   return gulp
     .src(config.alljs)
     .pipe($.if(args.verbose, $.print()))
-    .pipe($.jscs())
-    .pipe($.jscs.reporter())
-    .pipe($.jshint())
-    .pipe(
-      $.jshint.reporter("jshint-stylish", {
-        verbose: true
-      })
-    )
-    .pipe($.jshint.reporter("fail"));
+    .pipe($.eslint())
+    .pipe($.eslint.format())
+    .pipe($.eslint.failAfterError());
 });
 
-gulp.task("styles", ["clean-styles"], function() {
-  log("Preparing CSS");
+/**
+ * Task to prepare CSS for production
+ */
+gulp.task('styles', ['clean-styles'], function() {
+  log('Preparing CSS');
 
   return gulp
     .src(config.css)
-    .pipe($.concat("site.css"))
+    .pipe($.concat('site.css'))
     .pipe($.cleanCss())
     .pipe($.plumber())
     .pipe(
       $.autoprefixer({
-        browsers: ["last 2 version", "> 5%"]
+        browsers: ['last 2 version', '> 5%']
       })
     )
     .pipe(
       $.rename({
-        suffix: ".min"
+        suffix: '.min'
       })
     )
     .pipe(gulp.dest(config.temp));
 });
 
-gulp.task("fonts", ["clean-fonts"], function() {
-  log("Copying fonts");
+/**
+ * Task to prepare fonts for production
+ */
+gulp.task('fonts', ['clean-fonts'], function() {
+  log('Copying fonts');
 
-  return gulp.src(config.fonts).pipe(gulp.dest(config.build + "fonts"));
+  return gulp.src(config.fonts).pipe(gulp.dest(config.build + 'fonts'));
 });
 
-gulp.task("images", ["clean-images"], function() {
-  log("Copying images");
+/**
+ * Task to prepare images for production
+ */
+gulp.task('images', ['clean-images'], function() {
+  log('Copying images');
 
   return gulp
     .src(config.images)
@@ -66,42 +74,63 @@ gulp.task("images", ["clean-images"], function() {
         optimizationLevel: 4
       })
     )
-    .pipe(gulp.dest(config.build + "images"));
+    .pipe(gulp.dest(config.build + 'images'));
 });
 
-gulp.task("clean", function(done) {
+/**
+ * Task to clean stale production files
+ */
+gulp.task('clean', function(done) {
   var delconfig = [].concat(config.build, config.temp);
-  log("Cleaning: " + $.util.colors.cyan(delconfig));
+  log('Cleaning: ' + $.util.colors.cyan(delconfig));
   del(delconfig, done);
 });
 
-gulp.task("clean-fonts", function(done) {
-  return clean(config.build + "fonts/**/*.*", done);
+/**
+ * Task to clean stale font files
+ */
+gulp.task('clean-fonts', function(done) {
+  return clean(config.build + 'fonts/**/*.*', done);
 });
 
-gulp.task("clean-images", function(done) {
-  return clean(config.build + "images/**/*.*", done);
+/**
+ * Task to clean stale image files
+ */
+gulp.task('clean-images', function(done) {
+  return clean(config.build + 'images/**/*.*', done);
 });
 
-gulp.task("clean-styles", function(done) {
-  return clean(config.temp + "**/*.css", done);
+/**
+ * Task to clean stale CSS files
+ */
+gulp.task('clean-styles', function(done) {
+  return clean(config.temp + '**/*.css', done);
 });
 
-gulp.task("clean-code", function(done) {
-  var files = [].concat(
-    config.temp + "**/*.js",
-    config.build + "**/*.html",
-    config.build + "js/**/*.js"
+/**
+ * Task to clean stale JS files
+ */
+gulp.task('clean-code', function(done) {
+  let files = [].concat(
+    config.temp + '**/*.js',
+    config.build + '**/*.html',
+    config.build + 'js/**/*.js'
   );
   return clean(files, done);
 });
 
-gulp.task("less-watcher", function() {
-  gulp.watch([config.less], ["styles"]);
+/**
+ * Task to watch CSS file changes
+ */
+gulp.task('css-watcher', function() {
+  gulp.watch([config.css], ['styles']);
 });
 
-gulp.task("templatecache", ["clean-code"], function() {
-  log("Creating AngularJS $templateCache");
+/**
+ * Task to generate AngularJS template cache
+ */
+gulp.task('templatecache', ['clean-code'], function() {
+  log('Creating AngularJS $templateCache');
 
   return gulp
     .src(config.htmlTemplates)
@@ -119,10 +148,13 @@ gulp.task("templatecache", ["clean-code"], function() {
     .pipe(gulp.dest(config.temp));
 });
 
-gulp.task("wiredep", function() {
-  log("Wire up the bower css js and our app js into the html");
-  var options = config.getWiredepDefaultOptions();
-  var wiredep = require("wiredep").stream;
+/**
+ * Task to inject bower dependencies into HTML
+ */
+gulp.task('wiredep', function() {
+  log('Wire up the bower css js and our app js into the html');
+  let options = config.getWiredepDefaultOptions();
+  let wiredep = require('wiredep').stream;
   return gulp
     .src(config.index)
     .pipe(wiredep(options))
@@ -130,8 +162,11 @@ gulp.task("wiredep", function() {
     .pipe(gulp.dest(config.client));
 });
 
-gulp.task("inject", ["styles"], function() {
-  log("Wire up the app css js and our app js into the html");
+/**
+ * Task to inject custom project CSS and JS into html
+ */
+gulp.task('inject', ['styles'], function() {
+  log('Wire up the app css js and our app js into the html');
 
   return gulp
     .src(config.index)
@@ -139,46 +174,49 @@ gulp.task("inject", ["styles"], function() {
     .pipe(gulp.dest(config.client));
 });
 
-gulp.task("serve-dev", ["inject"], function() {
-  var isDev = true;
+/**
+ * Task to start up the development environment
+ */
+gulp.task('serve-dev', ['inject'], function() {
+  let isDev = true;
 
-  var nodeOptions = {
+  let nodeOptions = {
     script: config.nodeServer,
     delayTime: 1,
     env: {
       PORT: port,
-      NODE_ENV: isDev ? "dev" : "build"
+      NODE_ENV: isDev ? 'dev' : 'build'
     },
     watch: [config.server]
   };
 
   return $.nodemon(nodeOptions)
-    .on("restart", function(ev) {
-      log("*** nodemon restarted");
-      log("files changed on restart: \n" + ev);
+    .on('restart', function(ev) {
+      log('*** nodemon restarted');
+      log('files changed on restart: \n' + ev);
       setTimeout(function() {
-        browserSync.notify("reloading now ...");
+        browserSync.notify('reloading now ...');
         browserSync.reload({
           stream: false
         });
       }, config.browserReloadDelay);
     })
-    .on("start", function() {
-      log("*** nodemon started");
+    .on('start', function() {
+      log('*** nodemon started');
       startBrowserSync();
     })
-    .on("crash", function() {
-      log("*** nodemon crashed: script crashed for some reason");
+    .on('crash', function() {
+      log('*** nodemon crashed: script crashed for some reason');
     })
-    .on("exit", function() {
-      log("*** nodemon exited cleanly");
+    .on('exit', function() {
+      log('*** nodemon exited cleanly');
     });
 });
 
 // Functions
 function changeEvent(event) {
-  var srcPattern = new RegExp("/.*(?=/" + config.source + ")/");
-  log("File " + event.path.replace(srcPattern, "") + " " + event.type);
+  let srcPattern = new RegExp('/.*(?=/' + config.source + ')/');
+  log('File ' + event.path.replace(srcPattern, '') + ' ' + event.type);
 }
 
 function startBrowserSync() {
@@ -186,19 +224,19 @@ function startBrowserSync() {
     return;
   }
 
-  log("Starting browser-sync on port " + port);
+  log('Starting browser-sync on port ' + port);
 
-  gulp.watch([config.css], ["styles"]).on("change", function(event) {
+  gulp.watch([config.css], ['styles']).on('change', function(event) {
     changeEvent(event);
   });
 
-  var options = {
-    proxy: "localhost:" + port,
+  let options = {
+    proxy: 'localhost:' + port,
     port: 3000,
     files: [
-      config.client + "**/*.*",
-      "!" + config.css,
-      config.temp + "**/*.css"
+      config.client + '**/*.*',
+      '!' + config.css,
+      config.temp + '**/*.css'
     ],
     ghostMode: {
       clicks: true,
@@ -208,8 +246,8 @@ function startBrowserSync() {
     },
     injectChanges: true,
     logFileChanges: true,
-    logLevel: "debug",
-    logPrefix: "gulp-patterns",
+    logLevel: 'debug',
+    logPrefix: 'gulp-patterns',
     notify: true,
     reloadDelay: 1000
   };
@@ -218,12 +256,12 @@ function startBrowserSync() {
 }
 
 function clean(path, done) {
-  log("Cleaning: " + $.util.colors.cyan(path));
+  log('Cleaning: ' + $.util.colors.cyan(path));
   return del(path, done);
 }
 
 function log(message) {
-  if (typeof message === "object") {
+  if (typeof message === 'object') {
     for (var item in message) {
       if (message.hasOwnProperty(item)) {
         $.util.log($.util.colors.cyan(message[item]));

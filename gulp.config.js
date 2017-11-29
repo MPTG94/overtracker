@@ -1,18 +1,18 @@
 module.exports = function() {
-  var client = "./src/client/";
-  var clientApp = client + "app/";
-  var server = "./src/server/";
-  var temp = "./.tmp/";
+  var client = './src/client/';
+  var clientApp = client + 'app/';
+  var server = './src/server/';
+  var temp = './.tmp/';
   var config = {
     /**
      * All JS paths
      */
-    alljs: ["./src/**/*.js", "./*.js"],
+    alljs: ['./src/**/*.js', './*.js'],
 
     /**
      * Build folder paths
      */
-    build: "./build/",
+    build: './build/',
 
     /**
      * All client code paths
@@ -22,46 +22,46 @@ module.exports = function() {
     /**
      * All temp css file paths
      */
-    tempCss: temp + "site.min.css",
+    tempCss: temp + 'site.min.css',
 
     /**
      * Fonts paths
      */
-    fonts: "./bower_components/font-awesome/fonts/**/*.*",
+    fonts: './bower_components/font-awesome/fonts/**/*.*',
 
     /**
      * paths for AngularJS html templates
      */
-    htmlTemplates: clientApp + "**/*.html",
+    htmlTemplates: clientApp + '**/*.html',
 
     /**
      * All image file paths
      */
-    images: client + "images/**/*.*",
+    images: client + 'images/**/*.*',
 
     /**
      * All client html file paths
      */
-    index: client + "index.html",
+    index: client + 'index.html',
 
     /**
      * All JS client file paths
      */
     js: [
-      clientApp + "**/*.module.js",
-      clientApp + "**/*.js",
-      "!" + clientApp + "**/*.spec.js"
+      clientApp + '**/*.module.js',
+      clientApp + '**/*.js',
+      '!' + clientApp + '**/*.spec.js'
     ],
 
     /**
      * All CSS paths
      */
-    css: client + "styles/*.css",
+    css: client + 'styles/*.css',
 
     /**
      * All Less paths
      */
-    less: client + "styles/styles.less",
+    less: client + 'styles/styles.less',
 
     /**
      * Server code paths
@@ -77,11 +77,11 @@ module.exports = function() {
      * AngularJS template cache
      */
     templateCache: {
-      file: "templates.js",
+      file: 'templates.js',
       options: {
-        module: "app.core",
+        module: 'app.core',
         standAlone: false,
-        root: "app/"
+        root: 'app/'
       }
     },
 
@@ -103,7 +103,7 @@ module.exports = function() {
      * Node settings
      */
     defaultPort: 7203,
-    nodeServer: "./src/server/index.js"
+    nodeServer: './src/server/index.js'
   };
 
   config.getWiredepDefaultOptions = function() {
