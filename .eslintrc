@@ -4,7 +4,7 @@
     "browser": true,
     "node": true
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "react"],
   "rules": {
     "prettier/prettier": "error",
     "new-cap": 1,
@@ -13,6 +13,10 @@
     "no-negated-condition": 1
   },
   "parserOptions": {
-    "ecmaVersion": 6
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 6,
+    "sourceType": "module"
   }
 }

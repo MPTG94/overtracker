@@ -168,10 +168,11 @@ gulp.task('wiredep', function() {
 gulp.task('inject', ['styles'], function() {
   log('Wire up the app css js and our app js into the html');
 
-  return gulp
-    .src(config.index)
-    .pipe($.inject(gulp.src(config.tempCss)))
-    .pipe(gulp.dest(config.client));
+  return (gulp
+      .src(config.index)
+      .pipe($.inject(gulp.src([config.tempCss, './src/client/**/*.js'])))
+      //.pipe($.inject(gulp.src([config.tempCss, config.alljs.])))
+      .pipe(gulp.dest(config.client)) );
 });
 
 /**
