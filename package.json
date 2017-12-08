@@ -4,7 +4,9 @@
   "description": "API and client bundle for an Overwatch stat tracking website",
   "main": "start-client.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "node ./server/server.js",
+    "client": "node start-client.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/MPTG94/overtracker/issues"
   },
-  "homepage": "https://github.com/MPTG94/overtracker#readme"
+  "homepage": "https://github.com/MPTG94/overtracker#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
 }
