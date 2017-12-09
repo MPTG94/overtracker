@@ -3,7 +3,7 @@ const express = require('express');
 let app = express();
 
 app.get('/api/test', (req, res) => {
-  res.json({ message: 'Hello!' });
+  res.json({ message: 'NEW TEXTR' });
 });
 
 // Setting app listen on port 3001
