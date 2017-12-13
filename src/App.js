@@ -39,7 +39,8 @@ class App extends Component {
           <h2>{this.state.textMessage}</h2>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload Test!
+          To get started, edit <code>src/App.js</code> and save to reload Test
+          Hello!!
         </p>
       </div>
     );
